@@ -81,3 +81,8 @@ class TemporaryPinExpired(EWalletException):
 class MissingCompletionPrecedingStep(EWalletException):
     def __init__(self):
         super().__init__("E016", "Didn't complete preceding steps. should be complete before proceed.", 400)
+
+
+class InvalidRecipient(EWalletException):
+    def __init__(self):
+        super().__init__("E017", "Invalid Recipient. This user has no TakaFlow account.", 400)

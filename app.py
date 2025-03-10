@@ -31,6 +31,7 @@ from routes.registration import registration_bp
 from routes.signin import signin_bp
 from routes.profile import profile_bp
 from routes.password import pin_bp
+from routes.send_money import sendmoney_bp
 from exceptions.exception_handler import exception_bp
 
 
@@ -39,6 +40,7 @@ app.register_blueprint(signin_bp)
 app.register_blueprint(profile_bp)
 app.register_blueprint(pin_bp)
 app.register_blueprint(exception_bp)
+app.register_blueprint(sendmoney_bp)
 
 @app.route("/")
 def hello_world():
