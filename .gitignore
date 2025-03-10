@@ -1,0 +1,28 @@
+# Virtual environment
+venv/
+.env
+*.pyc
+__pycache__/
+
+# Dependency files
+*.log
+*.sqlite3
+instance/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+
+# Byte-compiled Python files
+*.pyc
+*.pyo
+*.pyd
+
+# Migrations (if using Flask-Migrate)
+migrations/
+
+# Cache and temp files
+*.bak
+.DS_Store
+Thumbs.db
