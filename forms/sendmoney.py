@@ -7,3 +7,9 @@ class RecipientForm(FlaskForm):
         DataRequired(message="Recipient Phone is required."),
         Regexp(r'^(?:\+8801[3-9]\d{8}|01[3-9]\d{8})$', message="Recipient phone must be valid and of the format starting with 01*********")
     ])
+
+class AmountForm(FlaskForm):
+    amount = StringField("Amount", validators=[
+        DataRequired(message="Amount is required."),
+        Regexp(r'\d+', message="Amount must be a valid number.")
+    ])

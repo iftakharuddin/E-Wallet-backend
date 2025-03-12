@@ -18,7 +18,7 @@ migrate = Migrate(app, db)
 csrf = CSRFProtect(app)
 jwt = JWTManager(app)
 
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=16)  # Token expires in 1 hour
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=16)
 app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
 
 from models.user import User

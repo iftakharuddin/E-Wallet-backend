@@ -86,3 +86,12 @@ class MissingCompletionPrecedingStep(EWalletException):
 class InvalidRecipient(EWalletException):
     def __init__(self):
         super().__init__("E017", "Invalid Recipient. This user has no TakaFlow account.", 400)
+
+
+class DailyLimitExceeded(EWalletException):
+    def __init__(self):
+        super().__init__("E018", "Daily limit exceeded", 400)
+
+class MonthlyLimitExceeded(EWalletException):
+    def __init__(self):
+        super().__init__("E019", "Monthly limit exceeded", 400)
