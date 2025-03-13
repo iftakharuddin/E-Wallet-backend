@@ -16,17 +16,4 @@ def is_valid_phone(phone):
     phone_regex = re.compile(r'^(?:\+8801[3-9]\d{8}|01[3-9]\d{8})$')
     return bool(phone_regex.match(phone))
 
-import random
-import string
-from models.transaction import *
 
-def generate_transaction_id():
-    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
-
-def generate_unique_transaction_id():
-    while True:
-        transaction_id = generate_transaction_id()
-        existing = Transaction.query.filter_by(transaction_id=transaction_id).first()
-        if not existing:  # Ensure it's unique
-            return transaction_id
-    
