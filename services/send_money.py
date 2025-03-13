@@ -2,7 +2,10 @@ from models.user import *
 from models.limit import *
 from models.user_daily_total import *
 from models.user_monthly_total import *
+from models.transaction import *
 from extensions import db
+from utils.generate_tnxId import *
+from exceptions.exception_class import *
 
 
 class SendMoney:
@@ -75,4 +78,93 @@ class SendMoney:
     def calculate_charge(user_phone, amount):
         return amount * (2 / 100)
         
+    @staticmethod
+    def send_money(sender, amount, recipient, idmkey, ref):
+        sender_user = User.query.filter_by(phone=sender).first()
+        recipient_user = User.query.filter_by(phone=recipient).first()
+
+        charge = SendMoney.calculate_charge(sender, amount)
+        tnxId = generate_unique_transaction_id()
+
+        sender_user.account[0].balance -= amount + charge
+        recipient_user.account[0].balance += amount
+
+        transaction = Transaction(
+            sender=sender,
+            feature_code="send_money",
+            amount=amount,
+            receiver=recipient,
+            tnxID=tnxId,
+            charge=charge,
+            reference=ref,
+            idempotency_key=idmkey
+        )
+
+        db.session.add(transaction)
+        db.session.commit()
+
+        time = transaction.created_at
+        # Update daily total, montyly total 
+        SendMoney.add_to_daily_total(sender_user.id, time, amount, "send_money")
+        SendMoney.add_to_monthly_total(sender_user.id, time, amount, "send_money")
+
+        return tnxId, charge, time
+    
+    @staticmethod
+    def get_tnx_by_idempotency_key(idempotency_key):
+        existing_tnx = Transaction.query.filter_by(idempotency_key = idempotency_key).first()
+        return existing_tnx
+    
+    @staticmethod
+    def add_to_daily_total(sender_id, time, amount, feature_code):
+        date = time.date()
+        user_daily_total = UserDailyTotal.query.filter(
+            UserDailyTotal.user_id == sender_id
+        ).filter(
+            UserDailyTotal.date == date
+        ).filter(
+            UserDailyTotal.feature_code == feature_code
+        ).first()
+
+        if user_daily_total:
+            user_daily_total.amount += amount
+        else: 
+            user_daily_total = UserDailyTotal(
+                user_id = sender_id,
+                date = date,
+                amount = amount,
+                feature_code = feature_code
+            )
+            db.session.add(user_daily_total)
         
+        db.session.commit()
+
+    @staticmethod
+    def add_to_monthly_total(sender_id, time, amount, feature_code):
+        def get_month_year(date):
+            return date.strftime("%Y-%m")  # Returns "YYYY-MM"
+
+        month_year = get_month_year(time)
+
+        user_monthly_total = UserMonthlyTotal.query.filter(
+            UserMonthlyTotal.user_id == sender_id
+        ).filter(
+            UserMonthlyTotal.month_year == month_year
+        ).filter(
+            UserMonthlyTotal.feature_code == feature_code
+        ).first()
+
+        if user_monthly_total:
+            user_monthly_total.amount += amount
+        else: 
+            user_monthly_total = UserMonthlyTotal(
+                user_id = sender_id,
+                month_year = month_year,
+                amount = amount,
+                feature_code = feature_code
+            )
+            db.session.add(user_monthly_total)
+        
+        db.session.commit()
+    
+    

@@ -95,3 +95,7 @@ class DailyLimitExceeded(EWalletException):
 class MonthlyLimitExceeded(EWalletException):
     def __init__(self):
         super().__init__("E019", "Monthly limit exceeded", 400)
+
+class ChooseDifferentAccount(EWalletException):
+    def __init__(self):
+        super().__init__("E020", "Choose different account. Recipient should be different than your own account.", 400)        
