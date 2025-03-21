@@ -41,7 +41,7 @@ def start_registration():
     otp = OTPService.send_otp(EmailGateway(pending.registration_no))
 
     return ResponseHandler.generate(response_code="S001", data={
-        "RegistrationNO": pending.registration_no,
+        "registration_no": pending.registration_no,
         "OTP": otp
     })
 
@@ -64,16 +64,17 @@ def verify_otp():
     data = request.get_json()
     otp = data.get("otp")
     registration_no = data.get("registration_no")
-
+    print(data)
     if not valid_otp(otp):
         raise InvalidOTP()
     if not is_valid_uuid(registration_no):
         raise InvalidRegistrationNo()
 
     ok = OTPService.verify_otp(otp, registration_no)
+    print(ok)
     if not ok:
-        raise ExpiredOTP()
-
+        raise WrongOrExpiredOTP()
+    print("1")
     return ResponseHandler.generate("S001", data={"msg": "OTP verification successful"})
 
 

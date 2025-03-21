@@ -17,3 +17,16 @@ class Transaction(db.Model):
 
     def __repr__(self):
         return f"<Transaction(id={self.id}, sender={self.sender}, receiver={self.receiver}, amount={self.amount}, tnxID={self.tnxID})>"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "sender": self.sender,
+            "feature_code": self.feature_code,
+            "amount": float(self.amount),  # Convert DECIMAL to float
+            "receiver": self.receiver,
+            "tnxID": self.tnxID,
+            "charge": float(self.charge),  # Convert DECIMAL to float
+            "reference": self.reference,
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),  # Format datetime
+        }

@@ -4,6 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 import json
 from forms.forms import UserUpdateForm
 from services.profile import ProfileService
+from utils.response_handler import *
 
 profile_bp = Blueprint("profile", __name__)
 
@@ -13,7 +14,7 @@ def profile():
     user_phone = get_jwt_identity()
     user = RegistrationService.get_user_by_phone(user_phone)
     user_json = {col.name: getattr(user, col.name) for col in user.__table__.columns} if user else None
-    return jsonify({"profile_info": user_json})
+    return ResponseHandler.generate("S001", data=user_json)
 
 @profile_bp.route("/profile/update", methods=["PATCH"])
 @jwt_required()
@@ -33,7 +34,7 @@ def profile_update():
 def balance():
     user_phone = get_jwt_identity()
     balance = ProfileService.get_balance_by_phone(user_phone)
-    return jsonify({"balance": balance}), 200
+    return ResponseHandler.generate("S001", data={"balance": balance})
 
 
 @profile_bp.route('/download-image', methods=['GET'])

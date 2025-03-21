@@ -46,9 +46,9 @@ class InvalidOTP(EWalletException):
     def __init__(self):
         super().__init__("E008", "Invalid OTP, should be 6 digits", 400)
 
-class ExpiredOTP(EWalletException):
+class WrongOrExpiredOTP(EWalletException):
     def __init__(self):
-        super().__init__("E009", "OTP is expired", 400)
+        super().__init__("E009", "Wrong or expired OTP", 400)
 
 class InvalidCredentials(EWalletException):
     def __init__(self):

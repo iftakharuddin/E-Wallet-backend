@@ -6,6 +6,7 @@ from flask_wtf.csrf import generate_csrf
 from flask_wtf.csrf import CSRFProtect
 from flask_jwt_extended import JWTManager
 from datetime import timedelta
+from flask_cors import CORS
 # import os
 
 # basedir = os.path.abspath(os.path.dirname(__file__))
@@ -17,6 +18,7 @@ db.init_app(app)
 migrate = Migrate(app, db)
 csrf = CSRFProtect(app)
 jwt = JWTManager(app)
+CORS(app)
 
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=16)
 app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
@@ -32,6 +34,7 @@ from routes.signin import signin_bp
 from routes.profile import profile_bp
 from routes.password import pin_bp
 from routes.send_money import sendmoney_bp
+from routes.dashboard import dashboard_bp
 from exceptions.exception_handler import exception_bp
 
 
@@ -41,6 +44,7 @@ app.register_blueprint(profile_bp)
 app.register_blueprint(pin_bp)
 app.register_blueprint(exception_bp)
 app.register_blueprint(sendmoney_bp)
+app.register_blueprint(dashboard_bp)
 
 @app.route("/")
 def hello_world():

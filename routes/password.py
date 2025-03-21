@@ -44,7 +44,7 @@ def verify_otp():
     elif ok == 1:
         raise InvalidOTP()
     elif ok == 2:
-        raise ExpiredOTP()
+        raise WrongOrExpiredOTP()
     
     return ResponseHandler.generate("S001", data={"msg": "OTP verification successful"})
 
