@@ -7,8 +7,8 @@ class LinkedBankAccount(db.Model):
 
     link_id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     wallet_id = db.Column(db.String(50), nullable=False)
-    bank_account_number = db.Column(db.String(20), nullable=False)
-    bank_owner_name = db.Column(db.String(100), nullable=False)
+    account_number = db.Column(db.String(20), nullable=False)
+    owner = db.Column(db.String(100), nullable=False)
     bank_link_id = db.Column(db.String(50), nullable=True)  # received from bank
     is_verified = db.Column(db.Boolean, default=False)
     token = db.Column(db.String(1024), nullable=True)
