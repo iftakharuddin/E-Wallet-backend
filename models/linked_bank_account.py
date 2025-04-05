@@ -12,7 +12,7 @@ class LinkedBankAccount(db.Model):
     bank_link_id = db.Column(db.String(50), nullable=True)  # received from bank
     is_verified = db.Column(db.Boolean, default=False)
     token = db.Column(db.String(1024), nullable=True)
-    bank_id = db.Column(db.Integer, db.ForignKey('banks.id'), nullable=False)
+    bank_id = db.Column(db.Integer, db.ForeignKey('banks.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
 

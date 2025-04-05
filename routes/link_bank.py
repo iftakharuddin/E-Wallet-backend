@@ -8,6 +8,13 @@ import requests
 
 linkbank_bp = Blueprint("linkbank", __name__)
 
+@linkbank_bp.route("/linkbank/banklist", methods=["GET"])
+@jwt_required()
+def linkbank_list():
+    banks = Bank.query.all()
+    banksinfo = [{"id": 1, "name": "Duch Bangla Bank Limited"}, {"id": 2, "name": "Islami Bank"}, {"id": 5, "name": "Mutual Trust Bank"}]
+    return ResponseHandler.generate("S001", data=banksinfo)
+
 @linkbank_bp.route("/linkbank/start", methods=["POST"])
 @jwt_required()
 def linkbank_start():
@@ -46,7 +53,7 @@ def linkbank_start():
     db.session.add(linked)
     db.session.commit()
 
-    return jsonify({
+    return ResponseHandler.generate("S001", data={
         "message": "Bank account verification started. OTP sent to user.",
         "link_id": linked.link_id
     })
@@ -83,4 +90,4 @@ def linkbank_end():
     linked_account.is_verified = True
     db.session.commit()
 
-    return jsonify({"message": "Bank account linked successfully."}), 200
+    return ResponseHandler.generate("S001", data={"message": "Bank account linked successfully."})

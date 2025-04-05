@@ -35,6 +35,7 @@ from routes.profile import profile_bp
 from routes.password import pin_bp
 from routes.send_money import sendmoney_bp
 from routes.dashboard import dashboard_bp
+from routes.link_bank import linkbank_bp
 from exceptions.exception_handler import exception_bp
 
 
@@ -45,6 +46,7 @@ app.register_blueprint(pin_bp)
 app.register_blueprint(exception_bp)
 app.register_blueprint(sendmoney_bp)
 app.register_blueprint(dashboard_bp)
+app.register_blueprint(linkbank_bp)
 
 @app.route("/")
 def hello_world():
