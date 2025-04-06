@@ -21,6 +21,6 @@ class Bank(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
-    client_id = db.Column(db.String(100), nullable=False)
-    client_secret = db.Column(db.String(100), nullable=False)
-    logo = db.Column(db.String(100), nullable=False)
+    client_id = db.Column(db.String(100), nullable=True)
+    client_secret = db.Column(db.String(100), nullable=True)
+    logo = db.Column(db.String(100), nullable=True)
